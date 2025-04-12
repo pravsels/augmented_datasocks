@@ -3,4 +3,4 @@ kornia>=0.6.0
 opencv-python
 numpy
 tqdm
-
+Pillow
