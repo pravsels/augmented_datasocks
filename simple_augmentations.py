@@ -39,10 +39,10 @@ augmentation_pipeline = K.AugmentationSequential(
     #     same_on_batch=True,
     #     p=0.5,
     # ),
-    K.RandomDissolving(
-        same_on_batch=True,
-        p=0.3
-    ),
+    # K.RandomDissolving(
+    #     same_on_batch=True,
+    #     p=0.5
+    # ),
     K.RandomGamma(
         same_on_batch=True,
         p=0.1,
