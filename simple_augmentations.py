@@ -23,13 +23,66 @@ else:
 # --- Define the Augmentation Pipeline ---
 # Use intensity-based (non-cropping) transforms; same_on_batch=True forces every frame to use the same parameters.
 augmentation_pipeline = K.AugmentationSequential(
-    K.ColorJitter(
+    K.ColorJiggle(
         brightness=0.5,
         contrast=0.5,
         saturation=0.5,
         hue=0.5,
         same_on_batch=True,
         p=1.0
+    ),
+    # K.RandomClahe(
+    #     same_on_batch=True,
+    #     p=0.3,
+    # ),
+    # K.RandomEqualize(
+    #     same_on_batch=True,
+    #     p=0.5,
+    # ),
+    K.RandomDissolving(
+        same_on_batch=True,
+        p=0.3
+    ),
+    K.RandomGamma(
+        same_on_batch=True,
+        p=0.1,
+    ),
+    # K.RandomMotionBlur(
+    #     3, 35., 0.5, p=0.1
+    # ),
+    K.RandomPlanckianJitter(
+        mode='CIED',
+        same_on_batch=True,
+        p=0.5
+    ),
+    # K.RandomPlasmaBrightness(
+    #     same_on_batch=True,
+    #     p=0.3,
+    # ),
+    K.RandomPlasmaShadow(
+        same_on_batch=True,
+        p=0.3,
+    ),
+    # K.RandomPlasmaContrast(
+    #     same_on_batch=True,
+    #     p=0.3,
+    # ),
+    # K.RandomPosterize(
+    #     same_on_batch=True,
+    #     p=0.3,
+    # ),
+    # K.RandomRain(
+    #     drop_height=(1,2),drop_width=(1,2),number_of_drops=(1,1),
+    #     same_on_batch=True,
+    #     p=1.,
+    # ),
+    K.RandomPerspective(
+        same_on_batch=True,
+        p=0.1
+    ),
+    K.RandomThinPlateSpline(
+        same_on_batch=True,
+        p=0.1
     ),
     K.RandomGaussianBlur(
         kernel_size=(3, 3),
