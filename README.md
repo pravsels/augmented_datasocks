@@ -1,5 +1,5 @@
 
-
+Repo for LeRobot Hack in Paris, 2025. 
 
 Script to generate image operation based augmentations using Kornia: 
 ```
