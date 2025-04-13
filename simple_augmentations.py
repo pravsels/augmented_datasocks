@@ -23,7 +23,7 @@ else:
 # --- Define the Augmentation Pipeline ---
 # Use intensity-based (non-cropping) transforms; same_on_batch=True forces every frame to use the same parameters.
 augmentation_pipeline = K.AugmentationSequential(
-    K.RandomHorizontalFlip(same_on_batch=True, p=0.5),
+    # K.RandomHorizontalFlip(same_on_batch=True, p=0.5),
     K.ColorJiggle(
         brightness=0.5,
         contrast=0.5,
