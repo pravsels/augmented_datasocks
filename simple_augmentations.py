@@ -7,9 +7,9 @@ from tqdm import tqdm
 import numpy as np
 
 # --- Setup Directories ---
-original_videos_dir = Path("original_videos")
+original_videos_dir = Path("camera_2")
 original_videos_dir.mkdir(exist_ok=True)
-augmented_videos_dir = Path("augmented_videos")
+augmented_videos_dir = Path("augmented_videos_camera_2")
 augmented_videos_dir.mkdir(exist_ok=True)
 
 # --- Select Device ---
@@ -23,6 +23,7 @@ else:
 # --- Define the Augmentation Pipeline ---
 # Use intensity-based (non-cropping) transforms; same_on_batch=True forces every frame to use the same parameters.
 augmentation_pipeline = K.AugmentationSequential(
+    K.RandomHorizontalFlip(same_on_batch=True, p=0.5),
     K.ColorJiggle(
         brightness=0.5,
         contrast=0.5,
