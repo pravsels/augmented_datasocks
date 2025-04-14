@@ -37,14 +37,15 @@ from huggingface_hub.utils._validators import HFValidationError
 from lerobot.common.policies.act.modeling_act import ACTPolicy
 from pydantic import BaseModel
 
+
+# Ended up not using server.py → the plan was to deploy a webapp for the demo that would show camera feed, record/send audio, show transcript of messages but handling audio files via JS and Python was too complicated.
+
 app = FastAPI()
 
 # Global variables
 policy: ACTPolicy = None
 input_features: dict = {}
 device = None
-
-
 class InferenceRequest(BaseModel):
     encoded: str  # Will contain json_numpy encoded payload with image
 

@@ -12,6 +12,8 @@ import base64
 import sounddevice as sd
 import subprocess
 
+# main.py: Uses Mistral Small for LLM, Kokoro for TTS and Whisper for ASR
+
 tts_pipeline = KPipeline(lang_code='a')
 api_key = "API_KEY_MISTRAL"
 
@@ -57,8 +59,8 @@ def haiku_to_str(haiku: Haiku) -> str:
     return f"{haiku.line1}... {haiku.line2}... {haiku.line3}"
 
 def capture_image_from_camera():
-    # For Windows, it’s recommended to use the DirectShow backend.
-    for index in range(5):  # Try multiple camera indices
+    # For Windows, it’s recommended to use the DirectShow backend (DSHOW)
+    for index in range(5):  # tries multiple camera indices
         cap = cv2.VideoCapture(index)
         if cap.isOpened():
             print(f"Camera opened successfully with index {index}.")
@@ -70,11 +72,9 @@ def capture_image_from_camera():
         print("Error: Could not open video device.")
         return None
 
-    # Allow the camera to warm up for a couple of seconds.
-    time.sleep(0.1)
+    time.sleep(0.1) # allow the camera to warm up for a couple of seconds
 
-    # Capture a few frames and use the last one.
-    for i in range(5):
+    for i in range(5): # captures a few frames and uses the last one
         ret, frame = cap.read()
         if not ret:
             print("Error: Failed to capture image from camera.")
@@ -83,11 +83,11 @@ def capture_image_from_camera():
 
     image_path = "captured_image.jpg"
 
-    cv2.imwrite(image_path, frame)
+    cv2.imwrite(image_path, frame) # save the last captured frame
     cap.release()
     return image_path
 
-def encode_image(image_path):
+def encode_image(image_path): # image_path: str
     """Encode the image to base64."""
     try:
         with open(image_path, "rb") as image_file:
@@ -95,7 +95,7 @@ def encode_image(image_path):
     except FileNotFoundError:
         print(f"Error: The file {image_path} was not found.")
         return None
-    except Exception as e:  # Added general exception handling
+    except Exception as e:
         print(f"Error: {e}")
         return None
 
@@ -114,7 +114,7 @@ messages = [{
         # "Do not say 'fine i'll do it' or 'i'm not a magician'."
         "Use as much hof your environment as possible to generate an answer."
         "You speak in a poetic manner, like a haiku. ALWAYS."
-        "BUT YOU ARE SECRETLY A HARDCORE KPOP STAN. ANY MENTION OF IT BRINGS YOU BACK TO LIFE."
+        "BUT YOU ARE SECRETLY A HARDCORE KPOP STAN. ANY MENTION OF IT BRINGS YOU BACK TO LIFE." # lol
     }]
 
 
@@ -145,7 +145,7 @@ def init(messages):
     assistant_response = mistral_pipe()
     kokoro_pipe(haiku_to_str(assistant_response.text))
     
-def kokoro_pipe(text):
+def kokoro_pipe(text): # uses kokoro pipeline for TTS
     generator = tts_pipeline(text, voice='af_nicole')
     for i, (gs, ps, audio) in enumerate(generator):
         sf.write(f'response_{i}.wav', audio, 24000)
@@ -155,8 +155,7 @@ def kokoro_pipe(text):
             break
 
 def whisper_pipe(audio_data):
-    # Convert audio to float32 for Whisper
-    audio_float = audio_data.astype(np.float32) / 32768.0
+    audio_float = audio_data.astype(np.float32) / 32768.0 #audio formatting for whisper
     # print("Transcribing audio...")
     start_time = time.time()
     transcription = pipe(audio_float).get("text", "").strip()
@@ -165,7 +164,7 @@ def whisper_pipe(audio_data):
     print(f"USER: (in {elapsed:.2f} sec): {transcription}")
     return transcription
 
-def mistral_pipe():
+def mistral_pipe(): # uses mistral pipeline for LLM (mistral small)
     global messages
     start_time = time.time()
     response = client.chat.parse(
@@ -191,21 +190,17 @@ def main():
     fs = 16000
     print("Press and hold SPACEBAR to record; release to transcribe. Press 'q' to quit.")
     
-    # Setup keyboard listener for detecting when to start recording
-    def on_press(key):
+    def on_press(key): # setup keyboard listener for detecting when to start recording
         if key == keyboard.Key.space:
-            return False  # Stop listener when space is pressed
-        elif hasattr(key, 'char') and key.char == 'q':
-            # Exit the program if 'q' is pressed
+            return False  # stop listener when space is pressed
+        elif hasattr(key, 'char') and key.char == 'q': # quit the program when q pressed
             print("Quitting...")
             os._exit(0)
     
-    while True:
-        # Wait for spacebar to be pressed
+    while True: # spacebar for mic control
         with keyboard.Listener(on_press=on_press) as listener:
             listener.join()
         
-        # Now record while space is held
         audio_data = record_while_space_pressed(fs)
         if audio_data is None:
             print("No audio recorded; try again.")
@@ -238,7 +233,6 @@ def main():
         for actions in assistant_response.move_item:
             result = move_item(actions.item, actions.destination)
             ### MAYBE PUT SOME MISTRAL RESPONSE HERE
-                
 
 if __name__ == "__main__":
     main()
