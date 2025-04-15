@@ -32,11 +32,6 @@ The augmented dataset used in this project is publicly available on Hugging Face
 The trained model, fine-tuned version of ACT model, is also available on Hugging Face, access the model here:  
 [![Model on Hugging Face](https://img.shields.io/badge/Model-Huggingface-green)](https://huggingface.co/pravsels/augmented_datasocks_24k_steps)
 
-## Overview
-
-DataSocks is a robotics project developed during the Mistral AI Hackathon, focusing on improving robot performance across varying environmental conditions. The project addresses one of the most significant challenges in modern robotics: environmental sensitivity during training and inference.
-
-Most robotic systems require consistent lighting and environmental conditions between training and deployment phases. When these conditions change, model performance degrades significantly. DataSocks demonstrates how data augmentation techniques can be used to create more robust robotic models that perform well across different environmental conditions.
 
 <div align="center">
     <img src="./examples_augmented_data/roboengine_augmented_video_2.gif" alt="DataSocks Demo" width="600">
@@ -45,6 +40,14 @@ Most robotic systems require consistent lighting and environmental conditions be
 <div align="center">
     <em>Demo GIF showing the robot picking up socks in different environmental conditions</em>
 </div>
+
+
+## Overview
+
+DataSocks is a robotics project developed during the Mistral AI Hackathon, focusing on improving robot performance across varying environmental conditions. The project addresses one of the most significant challenges in modern robotics: environmental sensitivity during training and inference.
+
+Most robotic systems require consistent lighting and environmental conditions between training and deployment phases. When these conditions change, model performance degrades significantly. DataSocks demonstrates how data augmentation techniques can be used to create more robust robotic models that perform well across different environmental conditions.
+
 
 ## The Challenge
 
